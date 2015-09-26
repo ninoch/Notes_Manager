@@ -1,0 +1,27 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head lang="en">
+
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/mystyle.css">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+    <div class="Login">
+        <form action="" method="post">
+            <hr/>
+            <label for="username">Username:</label>
+            <br/>
+            <input type="text" id="username" name="username">
+            <br/>
+            <label for="password">Password:</label>
+            <br/>
+            <input type="password" id="password" name="password">
+            <br/>
+            <input type="submit" value="Login">
+            <hr/>
+        </form>
+    </div>
+</body>
+</html>

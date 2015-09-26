@@ -1,0 +1,56 @@
+.MyNote {
+    margin: auto;
+    width: 60%;
+    border:3px solid darkcyan;
+    align-content: center;
+}
+
+.home {
+    color: darkcyan;
+    font-size: 15px;
+    font-weight: bold;
+    font-family: "Bitstream Vera Sans Mono", Monaco, "Courier New", Courier, monospace;
+}
+
+.MyNote h1 {
+    background-color: darkcyan;
+    margin: 0px;
+    color: ghostwhite;
+    font-family: "Bitstream Vera Sans Mono", Monaco, "Courier New", Courier, monospace;
+}
+
+.MyNote p {
+    margin: 10px;
+    font-size: 20px;
+    color: darkcyan;
+    font-family: 'Consolas', 'Monaco', 'Bitstream Vera Sans Mono', monospace;
+}
+
+.MyNoteBook {
+    margin: 20%;
+    width: 60%;
+    border:3px dashed darkcyan;
+    padding: 30px;
+    color: darkcyan;
+    font-family: "Bitstream Vera Sans Mono", Monaco, "Courier New", Courier, monospace;
+    font-weight: bold;
+    font-size: 25px;
+}
+
+.MyNoteBook button {
+    font-size: 25px;
+    color: whitesmoke;
+    background-color: darkcyan;
+    margin: 20px;
+    font-family: "Bitstream Vera Sans Mono", Monaco, "Courier New", Courier, monospace;
+}
+
+.Login {
+    background-color: darkcyan;
+    width: 40%;
+    margin: auto;
+    font-size: 15px;
+    color: whitesmoke;
+    padding: 20px;
+    font-size: 20px;
+}

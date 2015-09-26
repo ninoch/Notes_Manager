@@ -1,0 +1,19 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head lang="en">
+
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/mystyle.css">
+    <meta charset="UTF-8">
+    <title>{{ note.book.owner.username }}</title>
+
+</head>
+<body>
+    <div class="MyNote">
+        <h1> {{ note.title }} </h1>
+        <p>
+            {{ note.body }}
+        </p>
+    </div>
+</body>
+</html>

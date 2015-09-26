@@ -1,0 +1,32 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head lang="en">
+
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/mystyle.css">
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+</head>
+<body class="home">
+    Welcome {{ name }},
+    <br/>
+    <a href=""> Logout </a>
+    <table class="MyNoteBook">
+        <tbody>
+            {% for n in notes %}
+                <tr>
+                    <td>
+                        {{ n.title }}
+                    </td>
+                    <td>
+                        <button type="button">Edit</button>
+                    </td>
+                    <td>
+                        <button type="button">Remove</button>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

@@ -1,0 +1,27 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/mystyle.css">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body class="home">
+    <a href="">Back</a>
+    <hr/>
+    <div class="MyNote">
+        <h1> {{ note.title }} </h1>
+        <p>
+            {{ note.title }}
+        </p>
+        <hr/>
+        <form action="">
+            {% for n in books %}
+                <input type="radio" name="{{ n.title }}" value="{{ n.title }}"> {{ n.title }}
+                <br>
+            {% endfor %}
+            <input type="submit" value="Save">
+        </form>
+    </div>
+</body>
+</html>
