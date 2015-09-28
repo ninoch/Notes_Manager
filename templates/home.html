@@ -1,0 +1,38 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head lang="en">
+
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/mystyle.css">
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+</head>
+<body class="home">
+    Welcome {{ user.username }},
+    <br/>
+    <a href="{% url 'logout' %}"> Logout </a>
+    <table class="MyNoteBook">
+        <tbody>
+            {% for n in books %}
+                <tr>
+                    <td>
+                        {{ n.title }}
+                    </td>
+                    <td>
+                        <a  href="/notebook/{{ n.id }}/"><button type="button">View</button></a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+
+    <form class="MyNoteBook" action="{{ action }}" method="POST">
+        Add New NoteBook Here: <br/>
+        {% csrf_token %}
+        <input type="text" name="title" placeholder="NoteBook title">
+        <input type="submit" value="Add NoteBook" />
+    </form>
+
+</body>
+</html>
