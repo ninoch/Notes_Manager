@@ -5,28 +5,48 @@
 
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/mystyle.css">
     <meta charset="UTF-8">
-    <title>{{ title }}</title>
+    <title>{{ booktitle }}</title>
 </head>
 <body class="home">
-    Welcome {{ name }},
+    NoteBook name: {{ booktitle }},
     <br/>
-    <a href=""> Logout </a>
+    <a href="/home/"> Back </a>
     <table class="MyNoteBook">
         <tbody>
             {% for n in notes %}
                 <tr>
                     <td>
+                        <a href="/note/{{ n.id }}/">
                         {{ n.title }}
+                        </a>
                     </td>
                     <td>
-                        <button type="button">Edit</button>
+                        <textarea readonly="True">{{ n.body }}</textarea>
                     </td>
                     <td>
-                        <button type="button">Remove</button>
+                        <a href="/edit/{{ n.id }}/"><button type="button">Edit</button></a>
                     </td>
                 </tr>
             {% endfor %}
         </tbody>
     </table>
+    <form class="MyNoteBook" action="{{ action }}" method="POST">
+        Add New Note Here: <br/>
+        {% csrf_token %}
+        <input type="text" name="title" placeholder="Note Title">
+        <textarea name = "body" placeholder="Note Content"></textarea>
+        <input type="submit" value="Save New Note" />
+    </form>
+                <!--
+                <td>
+                </td>
+                <td>
+                    <textarea placeholder="Note Content"></textarea>
+                </td>
+                <td>
+                    <button type="button">Add New Note</button>
+                </td>
+                -->
+
 </body>
 </html>

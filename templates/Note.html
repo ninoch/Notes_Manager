@@ -8,12 +8,15 @@
     <title>{{ note.book.owner.username }}</title>
 
 </head>
-<body>
+<body class="home">
+    <a href="/notebook/{{ note.book.id }}/"> Back </a>
     <div class="MyNote">
         <h1> {{ note.title }} </h1>
         <p>
             {{ note.body }}
         </p>
+        <hr/>
+        Is Public: {{ note.public }}
     </div>
 </body>
 </html>

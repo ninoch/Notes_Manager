@@ -27,10 +27,10 @@
 }
 
 .MyNoteBook {
-    margin: 20%;
+    margin: 5px;
     width: 60%;
     border:3px dashed darkcyan;
-    padding: 30px;
+    padding: 5px;
     color: darkcyan;
     font-family: "Bitstream Vera Sans Mono", Monaco, "Courier New", Courier, monospace;
     font-weight: bold;

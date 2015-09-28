@@ -7,19 +7,40 @@
     <title></title>
 </head>
 <body class="home">
-    <a href="">Back</a>
+    <a href="/notebook/{{ note.book.id }}/">Back</a>
     <hr/>
     <div class="MyNote">
-        <h1> {{ note.title }} </h1>
+        <h1> {{ note.title }}
+        </h1>
         <p>
-            {{ note.title }}
+            {{ note.body }}
         </p>
+
         <hr/>
-        <form action="">
+        <form action="{{ action }}" method="POST">
+            {% csrf_token %}
+            <p>
+            Is Public
+                {% if note.public %}
+                    <input type="checkbox" name="public" checked>
+                {% else %}
+                    <input type="checkbox" name="public">
+                {% endif %}
+            </p>
+
+            <ul>
+            Change This note NoteBook:
             {% for n in books %}
-                <input type="radio" name="{{ n.title }}" value="{{ n.title }}"> {{ n.title }}
+                <li>
+                {% if note.book == n%}
+                    <input type="radio" name="book" value="{{ n.id }}" checked="checked"> {{ n.title }}
+                {% else %}
+                    <input type="radio" name="book" value="{{ n.id }}"> {{ n.title }}
+                {% endif %}
                 <br>
+                </li>
             {% endfor %}
+            </ul>
             <input type="submit" value="Save">
         </form>
     </div>

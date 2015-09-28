@@ -9,18 +9,18 @@
 </head>
 <body>
     <div class="Login">
-        <form action="" method="post">
-            <hr/>
-            <label for="username">Username:</label>
-            <br/>
-            <input type="text" id="username" name="username">
-            <br/>
-            <label for="password">Password:</label>
-            <br/>
-            <input type="password" id="password" name="password">
-            <br/>
-            <input type="submit" value="Login">
-            <hr/>
+         <form action="{{ action }}" method="POST">
+          {% csrf_token %}
+          <ul>
+              {% for ff in form %}
+                  {{ ff.label_tag }}
+                  <br/>
+                  {{ ff }}
+                  <br/>
+              {% endfor %}
+          </ul>
+          <input type="submit" value="Login" />
+          <a href="/signup/">Signup</a>
         </form>
     </div>
 </body>
