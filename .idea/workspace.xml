@@ -2,11 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="10e49d4b-83fd-4831-a9dc-42f3d4fe2f84" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/db.sqlite3" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/FirstProject" afterPath="$PROJECT_DIR$/FirstProject" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MyApp/models.py" afterPath="$PROJECT_DIR$/MyApp/models.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/FirstProject/settings.py" afterPath="$PROJECT_DIR$/FirstProject/settings.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MyApp/views.py" afterPath="$PROJECT_DIR$/MyApp/views.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="FirstProject.iws" />
@@ -522,7 +517,13 @@
       <option name="project" value="LOCAL" />
       <updated>1443445288541</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Cached and Email added">
+      <created>1443452835876</created>
+      <option name="number" value="00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1443452835876</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -569,7 +570,8 @@
     </option>
     <MESSAGE value="First Push" />
     <MESSAGE value="Essential Parts Completed" />
-    <option name="LAST_COMMIT_MESSAGE" value="Essential Parts Completed" />
+    <MESSAGE value="Cached and Email added" />
+    <option name="LAST_COMMIT_MESSAGE" value="Cached and Email added" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
