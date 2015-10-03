@@ -1,63 +1,26 @@
 import string
 from django.core.mail import send_mail
+from django.http import HttpResponse
+from django.template.loader import render_to_string
 from django.template.response import TemplateResponse
 from django.utils.crypto import random
 from .form import *
 from django.shortcuts import render, redirect
 from django.contrib.auth import login as auth_login, authenticate, logout
 from django.contrib.auth.decorators import login_required
-
-cacheUsers = {}
-cacheNotes = {}
-cacheBooks = {}
-
-
-def save_user(user):
-    cacheUsers[user.username] = user
-    user.save()
-
-
-def save_note(note):
-    cacheNotes[note.id] = note
-    note.save()
-
-
-def save_book(book):
-    cacheBooks[book.id] = book
-    book.save()
-
-
-def get_user(username):
-    if username not in cacheUsers:
-        cacheUsers[username] = Person.objects.get(username=username)
-    print(cacheUsers[username].birthday)
-    print(cacheUsers[username].active)
-    print(cacheUsers[username].username)
-    print(cacheUsers[username].first_name)
-    return cacheUsers[username]
-
-
-def get_book(bid):
-    if bid not in cacheBooks:
-        cacheBooks[bid] = NoteBook.objects.get(id=bid)
-    return cacheBooks[bid]
-
-
-def get_note(nid):
-    if nid not in cacheNotes:
-        cacheNotes[nid] = Note.objects.get(id=nid)
-    return cacheNotes[nid]
-
+from django.core.cache import cache
+import django.utils.html as html
 
 @login_required(login_url='/login/')
 def show_home(request):
-    user = get_user(username=request.user.username)
+    print("*********** HOME ")
+    user = Person.objects.get(username=request.user.username)
     if request.method == "POST":
         title = request.POST['title']
         book = NoteBook()
         book.title = title
         book.owner = user
-        save_book(book)
+        book.save()
     books = NoteBook.objects.filter(owner=user)
     return render(request, "home.html", {
         'books': books,
@@ -65,36 +28,73 @@ def show_home(request):
     })
 
 
+def make_cache(rendered, note):
+    if note.public:
+        return 'T-owner:' + note.book.owner.username + ' ' + rendered
+    else:
+        return 'F-owner:' + note.book.owner.username + ' ' + rendered
+
+
+def get_html(cached) -> string:
+    """
+
+    :rtype : String
+    """
+    ind = 0
+    while cached[ind] != ' ':
+        ind += 1
+    return cached[ind:]
+
+
+def has_access(cached, user):
+    if cached[0] == 'T':
+        return True
+    ind = 8
+    owner = ''
+    while cached[ind] != ' ':
+        owner = owner + cached[ind]
+        ind += 1
+    print("------------- in has acccess: ----------")
+    print(user + " =?= " + owner)
+    if user == owner:
+        return True
+    return False
+
+
 @login_required(login_url='/login/')
 def show_note(request, note_id):
-    user = get_user(username=request.user.username)
-    note = get_note(note_id)
-    if note.public or user == note.book.owner:
-        return render(request, "Note.html", {
-            'note': note
-        })
-    else:
-        return TemplateResponse(request, 'Alert.html', {})
+    print("************** NOTE")
+    user = Person.objects.get(username=request.user.username)
+    rendered_page = cache.get('note'+note_id)
+    if not rendered_page:
+        note = Note.objects.get(id=note_id)
+        rendered_page = make_cache(render_to_string("Note.html", {'note': note}), note)
 
+    cache.add('note'+note_id, rendered_page)
+    if has_access(rendered_page, request.user.username):
+        return HttpResponse(get_html(rendered_page))
+    else:
+        return TemplateResponse(request, "Alert.html", {})
 
 @login_required(login_url='/login/')
 def show_edit(request, note_id):
-    user = get_user(username=request.user.username)
-    note = get_note(note_id)
+    user = Person.objects.get(username=request.user.username)
+    note = Note.objects.get(id=note_id)
     if note.public or user == note.book.owner:
         if request.method == 'POST':
-            note = get_note(note_id)
+            note = Note.objects.get(id=note_id)
             old_book = note.book
-            new_book = get_book(request.POST['book'])
+            new_book = NoteBook.objects.get(id=request.POST['book'])
             is_public = False
             if 'public' in request.POST:
                 is_public = True
             note.book = new_book
             note.public = is_public
-            save_note(note)
+            note.save()
+            cache.delete('note'+note_id)
             return redirect("/notebook/" + str(old_book.id) + "/")
         user = request.user
-        note = get_note(note_id)
+        note = Note.objects.get(id=note_id)
         print(note.public)
         books = NoteBook.objects.filter(owner=user)
         return render(request, "Edit.html", {
@@ -107,7 +107,7 @@ def show_edit(request, note_id):
 
 @login_required(login_url='/login/')
 def show_book(request, book_id):
-    book = get_book(book_id)
+    book = NoteBook.objects.get(id=book_id)
     if request.method == "POST":
         title = request.POST['title']
         body = request.POST['body']
@@ -116,7 +116,7 @@ def show_book(request, book_id):
         note.title = title
         note.book = book
         note.public = False
-        save_note(note)
+        note.save()
     notes = Note.objects.filter(book=book)
     return render(request, "NoteBook.html", {
         'notes': notes,
@@ -131,7 +131,7 @@ def show_signup(request):
             new_user = form.save(commit=True)
             new_user.set_password(form.cleaned_data['password'])
             new_user.active = False
-            save_user(new_user)
+            new_user.save()
             send_activation_link(new_user)
             return redirect('/login/')
     else:
@@ -148,7 +148,7 @@ def show_login(request):
             username = form.cleaned_data["username"]
             password = form.cleaned_data["password"]
             user = authenticate(username=username, password=password)
-            my_user = get_user(username=username)
+            my_user = Person.objects.get(username=username)
             if my_user.active and user is not None:
                 auth_login(request, user)
                 return redirect('/home/')
@@ -197,7 +197,7 @@ def activate_account(request, activation_url):
         al = Activation.objects.get(link=activation_url)
         my_user = al.user
         my_user.active = True
-        save_user(my_user)
+        my_user.save()
         al.delete()
     except Activation.DoesNotExist:
         return render(request, "Alert.html", {})
