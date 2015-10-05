@@ -1,6 +1,5 @@
 from django import forms
 from .models import *
-from captcha.fields import CaptchaField
 from django.forms.extras import SelectDateWidget
 
 class SignupForm(forms.ModelForm):

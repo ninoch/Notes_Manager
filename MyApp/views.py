@@ -1,3 +1,4 @@
+# coding=UTF8
 import string
 from django.core.mail import send_mail
 from django.http import HttpResponse
@@ -35,7 +36,7 @@ def make_cache(rendered, note):
         return 'F-owner:' + note.book.owner.username + ' ' + rendered
 
 
-def get_html(cached) -> string:
+def get_html(cached):
     """
 
     :rtype : String
