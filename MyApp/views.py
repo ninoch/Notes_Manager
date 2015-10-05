@@ -12,7 +12,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.cache import cache
 import django.utils.html as html
 
-@login_required(login_url='/login/')
+@login_required()
 def show_home(request):
     print("*********** HOME ")
     user = Person.objects.get(username=request.user.username)
@@ -37,10 +37,6 @@ def make_cache(rendered, note):
 
 
 def get_html(cached):
-    """
-
-    :rtype : String
-    """
     ind = 0
     while cached[ind] != ' ':
         ind += 1
@@ -62,7 +58,7 @@ def has_access(cached, user):
     return False
 
 
-@login_required(login_url='/login/')
+@login_required()
 def show_note(request, note_id):
     print("************** NOTE")
     user = Person.objects.get(username=request.user.username)
@@ -77,7 +73,7 @@ def show_note(request, note_id):
     else:
         return TemplateResponse(request, "Alert.html", {})
 
-@login_required(login_url='/login/')
+@login_required()
 def show_edit(request, note_id):
     user = Person.objects.get(username=request.user.username)
     note = Note.objects.get(id=note_id)
@@ -106,7 +102,7 @@ def show_edit(request, note_id):
         return TemplateResponse(request, 'Alert.html', {})
 
 
-@login_required(login_url='/login/')
+@login_required()
 def show_book(request, book_id):
     book = NoteBook.objects.get(id=book_id)
     if request.method == "POST":
@@ -159,7 +155,7 @@ def show_login(request):
     })
 
 
-@login_required(login_url='/login/')
+@login_required()
 def logout_view(request):
     logout(request)
     return redirect('/login/')
@@ -175,17 +171,9 @@ def send_activation_link(user):
     al.save()
 
     url = "http://localhost:8000/activate/" + activation_link
-    msg = "با سلام"
-    msg += "\n"
-    msg += "\n"
-    msg += user.first_name + " " + user.last_name
-    msg += "\n"
-    msg += "از ثبت نام شما متشکریم. با کلیک بر روی لینک زیر می توانید حساب کاربری خود را فعال سازی کنید."
-    msg += "\n"
-    msg += "\n"
-    msg += url
+    msg = render_to_string("Email.html", {'url': url, 'user': user})
 
-    subject = "فعال سازی حساب کاربری"
+    subject = "Account activation"
     sender = 'simorgh1393tahlil@gmail.com'
     recipients = [user.email]
 
