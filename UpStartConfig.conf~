@@ -1,0 +1,14 @@
+description "First Project"
+
+start on (filesystem)
+stop on runlevel [016]
+
+respawn
+setuid nobody
+setgid nogroup
+chdir /home/ninochika/Desktop/Bazaar/FirstProject
+
+respawn
+script
+    exec /usr/bin/gunicorn --bind 0.0.0.0:8000 --workers 3 FirstProject.wsgi:application
+end script
